@@ -1,6 +1,6 @@
 {
-    "name": "PhpGt/CurlInterface",
-    "description": "Interfaces for Curl object wrappers.",
+    "name": "phpgt/curlinterface",
+    "description": "PHP 7 interfaces for cURL object wrappers.",
     "type": "library",
 
     "require": {
