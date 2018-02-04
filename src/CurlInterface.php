@@ -13,7 +13,7 @@ interface CurlInterface {
 	public function __clone();
 
 	/**
-	 * Get the underlying curl resource, as created with curl_init
+	 * Obtain the underlying curl resource, as created with curl_init.
 	 */
 	public function getHandle():resource;
 
