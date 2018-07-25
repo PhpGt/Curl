@@ -1,6 +1,6 @@
 {
-    "name": "phpgt/curlinterface",
-    "description": "PHP 7 interfaces for cURL object wrappers.",
+    "name": "phpgt/curl",
+    "description": "cURL object wrapper.",
     "type": "library",
 
     "require": {
@@ -18,7 +18,7 @@
 
     "autoload": {
         "psr-4": {
-            "Gt\\CurlInterface\\": "./src"
+            "Gt\\Curl\\": "./src"
         }
     },
 
