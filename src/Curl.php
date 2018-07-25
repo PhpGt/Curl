@@ -2,7 +2,10 @@
 
 namespace Gt\Curl;
 
-class Curl {
+use Gt\CurlInterface\CurlException;
+use Gt\CurlInterface\CurlInterface;
+
+class Curl implements CurlInterface {
 	protected $ch;
 
 	public function __construct(string $url = null) {
@@ -23,6 +26,21 @@ class Curl {
 	 */
 	public function __clone() {
 		curl_copy_handle($this->ch);
+	}
+
+	/**
+	 * @see http://php.net/manual/en/function.curl-version.php
+	 */
+	public static function version(int $age = CURLVERSION_NOW):array {
+		return curl_version($age);
+	}
+
+	/**
+	 * Return string describing the given error code
+	 * @see http://php.net/manual/en/function.curl-strerror.php
+	 */
+	public static function strError(int $errorNum):string {
+		return curl_strerror($errorNum);
 	}
 
 	/**
@@ -53,15 +71,28 @@ class Curl {
 	 * Perform a cURL session
 	 * @see http://php.net/manual/en/function.curl-exec.php
 	 */
-	public function exec() {
-		return curl_exec($this->ch);
+	public function exec():string {
+		$response = curl_exec($this->ch);
+
+		if(false === $response) {
+			throw new CurlException("Exec failure");
+		}
+
+		return $response;
 	}
 
 	/**
 	 * Get information regarding the transfer
 	 * @see http://php.net/manual/en/function.curl-getinfo.php
 	 */
-	public function getInfo(int $opt) {
+	public function getInfo(int $opt):string {
+		if($opt <= 0) {
+			throw new CurlException(
+				"Option must be greater than zero, "
+				. $opt
+				. " given."
+			);
+		}
 		return curl_getinfo($this->ch, $opt);
 	}
 
@@ -106,14 +137,6 @@ class Curl {
 	}
 
 	/**
-	 * Return string describing the given error code
-	 * @see http://php.net/manual/en/function.curl-strerror.php
-	 */
-	public function strError(int $errorNum):string {
-		return curl_strerror($errorNum);
-	}
-
-	/**
 	 * Decodes the given URL encoded string
 	 * @see http://php.net/manual/en/function.curl-unescape.php
 	 */
@@ -122,9 +145,16 @@ class Curl {
 	}
 
 	/**
-	 * @see http://php.net/manual/en/function.curl-version.php
+	 * Obtain the underlying curl resource, as created with curl_init.
 	 */
-	public function version(int $age = CURLVERSION_NOW):array {
-		return curl_version($age);
+	public function getHandle(){
+		return $this->ch;
+	}
+
+	/**
+	 * Gets all CURLINFO_ data, identical to calling curl_getinfo with no arguments.
+	 */
+	public function getAllInfo():array {
+		return $this->getInfo();
 	}
 }

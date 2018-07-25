@@ -7,91 +7,107 @@ namespace Gt\CurlInterface;
  * matching methods for all internal functions.
  */
 interface CurlInterface {
+	public function __construct(string $url = null);
+
 	/**
-	 * @see curl_copy_handle()
+	 * Close a cURL session
+	 * @see http://php.net/manual/en/function.curl-close.php
+	 */
+	public function __destruct();
+
+	/**
+	 * Copy a cURL handle along with all of its preferences
+	 * @see http://php.net/manual/en/function.curl-copy-handle.php
 	 */
 	public function __clone();
 
 	/**
-	 * Obtain the underlying curl resource, as created with curl_init.
+	 * Gets cURL version information
+	 * @see http://php.net/manual/en/function.curl-version.php
 	 */
-	public function getHandle():resource;
+	public static function version(int $age = CURLVERSION_NOW):array;
 
 	/**
-	 * @see curl_version()
+	 * Return string describing the given error code
+	 * @see http://php.net/manual/en/function.curl-strerror.php
 	 */
-	static public function version(int $age = CURLVERSION_NOW):array;
+	public static function strError(int $errorNum):string;
 
 	/**
-	 * @see curl_strerror()
-	 */
-	static public function strerror(int $errornum):array;
-
-	/**
-	 * @see curl_init()
-	 */
-	public function init(string $url = null):void;
-
-	/**
-	 * @see curl_errno()
+	 * Return the last error number
+	 * @see http://php.net/manual/en/function.curl-errno.php
 	 */
 	public function errno():int;
 
 	/**
-	 * @see curl_error()
+	 * Return a string containing the last error for the current session
+	 * @see http://php.net/manual/en/function.curl-error.php
 	 */
 	public function error():string;
 
 	/**
-	 * @see curl_exec()
-	 * @throws CurlException if curl_exec() returned false
-	 *
-	 * @todo Can't have string and bool as return type! Force exception?
-	 */
-	public function exec(int $attempts = 1, bool $useException = false):string;
-
-	/**
-	 * Gets the info corresponding to CURLINFO_* constant. For all info, use getAllInfo()
-	 * @see curl_getinfo()
-	 */
-	public function getInfo(int $opt = 0):string;
-
-	/**
-	 * Gets all CURLINFO_ data, identical to calling curl_getinfo with no arguments.
-	 * @see curl_getinfo()
-	 */
-	public function getAllInfo():array;
-
-	/**
-	 * @see curl_setopt()
-	 */
-	public function setOpt(int $option, $value):bool;
-
-	/**
-	 * @see curl_setopt_array()
-	 */
-	public function setOptArray(array $options):bool;
-
-	/**
-	 * @see curl_escape()
-	 * @throws CurlException on failure
+	 * URL encodes the given string
+	 * @see http://php.net/manual/en/function.curl-escape.php
 	 */
 	public function escape(string $str):string;
 
 	/**
-	 * @see curl_unescape()
-	 * @throws CurlException on failure
+	 * Perform a cURL session
+	 * @throws CurlException when curl_exec returns false
+	 * @see http://php.net/manual/en/function.curl-exec.php
 	 */
-	public function unescape(string $str):string;
+	public function exec():string;
 
 	/**
-	 * @see curl_reset()
+	 * Get information regarding the transfer
+	 * @see http://php.net/manual/en/function.curl-getinfo.php
+	 */
+	public function getInfo(int $opt):string;
+
+	/**
+	 * Initialize a cURL session
+	 * @see http://php.net/manual/en/function.curl-init.php
+	 */
+	public function init(string $url = null):void;
+
+	/**
+	 * Pause and unpause the connection
+	 * @see http://php.net/manual/en/function.curl-pause.php
+	 */
+	public function pause(int $bitmask):int;
+
+	/**
+	 * Reset all options of the libcurl session handle
+	 * @see http://php.net/manual/en/function.curl-reset.php
 	 */
 	public function reset():void;
 
 	/**
-	 * Sets combination of CURLPAUSE_* constants, returning CURLE_OK on success.
-	 * @see curl_pause()
+	 * Set an option for the cURL transfer
+	 * @see http://php.net/manual/en/function.curl-setopt.php
 	 */
-	public function pause(int $bitmask):int;
+	public function setOpt(int $option, $value):bool;
+
+	/**
+	 * Set multiple options for the cURL transfer
+	 * @see http://php.net/manual/en/function.curl-setopt-array.php
+	 */
+	public function setOptArray(array $options):bool;
+
+	/**
+	 * Decodes the given URL encoded string
+	 * @see http://php.net/manual/en/function.curl-unescape.php
+	 */
+	public function unescape(string $str):string;
+
+	/**
+	 * Obtain the underlying curl resource, as created with curl_init.
+	 */
+	public function getHandle();
+
+	/**
+	 * Gets all CURLINFO_ data, identical to calling
+	 * with no arguments.
+	 */
+	public function getAllInfo():array;
 }
