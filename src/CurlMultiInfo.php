@@ -4,8 +4,21 @@ namespace Gt\Curl;
 
 use Gt\CurlInterface\CurlMultiInfoInterface;
 
+/**
+ * @see http://php.net/manual/en/function.curl-multi-info-read.php
+ */
 class CurlMultiInfo implements CurlMultiInfoInterface {
+	/** @var int The CURLMSG_DONE constant */
+	protected $message;
+	/** @var int */
+	protected $result;
+	/** @var resource */
+	protected $handle;
+
 	public function __construct(array $curlMultiInfoRead) {
+		$this->message = $curlMultiInfoRead["msg"];
+		$this->result = $curlMultiInfoRead["result"];
+		$this->handle = $curlMultiInfoRead["handle"];
 	}
 
 	/**
@@ -13,7 +26,7 @@ class CurlMultiInfo implements CurlMultiInfoInterface {
 	 * The CURLMSG_DONE constant. Other return values are currently not available.
 	 */
 	public function getMessage():string {
-		// TODO: Implement getMessage() method.
+		return $this->message;
 	}
 
 	/**
@@ -21,7 +34,7 @@ class CurlMultiInfo implements CurlMultiInfoInterface {
 	 * One of the CURLE_* constants. If everything is OK, the CURLE_OK will be the result.
 	 */
 	public function getResult():int {
-		// TODO: Implement getResult() method.
+		return $this->result;
 	}
 
 	/**
@@ -29,6 +42,6 @@ class CurlMultiInfo implements CurlMultiInfoInterface {
 	 * Resource of type curl indicates the handle which it concerns.
 	 */
 	public function getHandle() {
-		// TODO: Implement getHandle() method.
+		return $this->handle;
 	}
 }
