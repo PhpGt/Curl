@@ -89,5 +89,5 @@ interface CurlMultiInterface {
 	 * @see http://php.net/manual/en/function.curl-multi-setopt.php
 	 * @throws CurlException on failure
 	 */
-	public function setOpt(int $opt, $val):void;
+	public function setOpt(int $option, $value):void;
 }
