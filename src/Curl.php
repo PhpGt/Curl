@@ -155,6 +155,6 @@ class Curl implements CurlInterface {
 	 * Gets all CURLINFO_ data, identical to calling curl_getinfo with no arguments.
 	 */
 	public function getAllInfo():array {
-		return $this->getInfo();
+		return curl_getinfo($this->ch, 0);
 	}
 }
