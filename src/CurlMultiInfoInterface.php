@@ -1,5 +1,5 @@
 <?php
-namespace Gt\CurlInterface;
+namespace Gt\Curl;
 
 interface CurlMultiInfoInterface {
 	/**

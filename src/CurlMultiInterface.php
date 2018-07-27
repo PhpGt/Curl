@@ -1,5 +1,5 @@
 <?php
-namespace Gt\CurlInterface;
+namespace Gt\Curl;
 
 /**
  * Defines all methods associated with PHP's internal Curl Multi handler,

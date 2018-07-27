@@ -1,5 +1,4 @@
 <?php
-
 namespace Gt\Curl;
 
 class CurlShare implements CurlShareInterface {
