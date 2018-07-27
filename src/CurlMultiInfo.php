@@ -1,8 +1,5 @@
 <?php
-
 namespace Gt\Curl;
-
-use Gt\CurlInterface\CurlMultiInfoInterface;
 
 /**
  * @see http://php.net/manual/en/function.curl-multi-info-read.php

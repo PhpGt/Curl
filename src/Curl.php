@@ -2,9 +2,6 @@
 
 namespace Gt\Curl;
 
-use Gt\CurlInterface\CurlException;
-use Gt\CurlInterface\CurlInterface;
-
 class Curl implements CurlInterface {
 	protected $ch;
 

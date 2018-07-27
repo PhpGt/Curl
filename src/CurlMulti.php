@@ -1,11 +1,6 @@
 <?php
 namespace Gt\Curl;
 
-use Gt\CurlInterface\CurlException;
-use Gt\CurlInterface\CurlInterface;
-use Gt\CurlInterface\CurlMultiInfoInterface;
-use Gt\CurlInterface\CurlMultiInterface;
-
 class CurlMulti implements CurlMultiInterface {
 	/** @var resource */
 	protected $mh;
