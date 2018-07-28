@@ -1,5 +1,4 @@
 <?php
-
 namespace Gt\Curl;
 
 class Curl implements CurlInterface {
@@ -45,9 +44,40 @@ class Curl implements CurlInterface {
 
 	/**
 	 * Return string containing last exec call's output
+	 * @throws NoOutputException
 	 */
-	public function output():?string {
+	public function output():string {
+		if(is_null($this->buffer)) {
+			throw new NoOutputException();
+		}
+
 		return $this->buffer;
+	}
+
+	/**
+	 * Return json-decoded output from last exec call
+	 * @throws JsonDecodeException
+	 */
+	public function outputJson(
+		int $depth = 512,
+		int $options = 0
+	) {
+		if(is_null($this->buffer)) {
+			throw new NoOutputException();
+		}
+
+		$json = json_decode(
+			$this->buffer,
+			false,
+			$depth,
+			$options
+		);
+		if(is_null($json)) {
+			$errorMessage = json_last_error_msg();
+			throw new JsonDecodeException($errorMessage);
+		}
+
+		return $json;
 	}
 
 	/**
