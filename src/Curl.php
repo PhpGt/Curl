@@ -115,7 +115,7 @@ class Curl implements CurlInterface {
 		ob_end_clean();
 
 		if(false === $response) {
-			throw new CurlException("Exec failure");
+			throw new CurlException($this->error());
 		}
 		if(true === $response) {
 			$response = $this->buffer;
