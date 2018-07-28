@@ -3,7 +3,10 @@
 namespace Gt\Curl;
 
 class Curl implements CurlInterface {
+	/** @var resource */
 	protected $ch;
+	/** @var string */
+	protected $buffer;
 
 	public function __construct(string $url = null) {
 		$this->init($url);
@@ -41,6 +44,13 @@ class Curl implements CurlInterface {
 	}
 
 	/**
+	 * Return string containing last exec call's output
+	 */
+	public function output():?string {
+		return $this->buffer;
+	}
+
+	/**
 	 * Return the last error number
 	 * @see http://php.net/manual/en/function.curl-errno.php
 	 */
@@ -69,12 +79,18 @@ class Curl implements CurlInterface {
 	 * @see http://php.net/manual/en/function.curl-exec.php
 	 */
 	public function exec():string {
+		ob_start();
 		$response = curl_exec($this->ch);
+		$this->buffer = ob_get_contents();
+		ob_end_clean();
 
 		if(false === $response) {
 			throw new CurlException("Exec failure");
 		}
-
+		if(true === $response) {
+			$response = $this->buffer;
+		}
+		
 		return $response;
 	}
 
