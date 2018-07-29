@@ -1,9 +1,11 @@
 <?php
-
 namespace Gt\Curl;
 
 class Curl implements CurlInterface {
+	/** @var resource */
 	protected $ch;
+	/** @var string */
+	protected $buffer;
 
 	public function __construct(string $url = null) {
 		$this->init($url);
@@ -41,6 +43,44 @@ class Curl implements CurlInterface {
 	}
 
 	/**
+	 * Return string containing last exec call's output
+	 * @throws NoOutputException
+	 */
+	public function output():string {
+		if(is_null($this->buffer)) {
+			throw new NoOutputException();
+		}
+
+		return $this->buffer;
+	}
+
+	/**
+	 * Return json-decoded output from last exec call
+	 * @throws JsonDecodeException
+	 */
+	public function outputJson(
+		int $depth = 512,
+		int $options = 0
+	) {
+		if(is_null($this->buffer)) {
+			throw new NoOutputException();
+		}
+
+		$json = json_decode(
+			$this->buffer,
+			false,
+			$depth,
+			$options
+		);
+		if(is_null($json)) {
+			$errorMessage = json_last_error_msg();
+			throw new JsonDecodeException($errorMessage);
+		}
+
+		return $json;
+	}
+
+	/**
 	 * Return the last error number
 	 * @see http://php.net/manual/en/function.curl-errno.php
 	 */
@@ -69,12 +109,18 @@ class Curl implements CurlInterface {
 	 * @see http://php.net/manual/en/function.curl-exec.php
 	 */
 	public function exec():string {
+		ob_start();
 		$response = curl_exec($this->ch);
+		$this->buffer = ob_get_contents();
+		ob_end_clean();
 
 		if(false === $response) {
-			throw new CurlException("Exec failure");
+			throw new CurlException($this->error());
 		}
-
+		if(true === $response) {
+			$response = $this->buffer;
+		}
+		
 		return $response;
 	}
 
