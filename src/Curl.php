@@ -24,7 +24,7 @@ class Curl implements CurlInterface {
 	 * @see http://php.net/manual/en/function.curl-copy-handle.php
 	 */
 	public function __clone() {
-		curl_copy_handle($this->ch);
+		$this->ch = curl_copy_handle($this->ch);
 	}
 
 	/**
