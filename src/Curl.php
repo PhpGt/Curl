@@ -30,8 +30,12 @@ class Curl implements CurlInterface {
 	/**
 	 * @see http://php.net/manual/en/function.curl-version.php
 	 */
-	public static function version(int $age = CURLVERSION_NOW):array {
-		return curl_version($age);
+	public static function version(
+		int $age = CURLVERSION_NOW
+	):CurlVersionInterface {
+		return new CurlVersion(
+			curl_version($age)
+		);
 	}
 
 	/**
