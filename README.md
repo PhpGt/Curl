@@ -13,12 +13,20 @@ Example usage: Get a JSON object from a remote source
 
 When working with HTTP calls, it is extremely common to work with JSON. This library removes the need of a lot of boilerplate code by buffering the output of `exec()` calls for easy retrieval later with `output()` or `outputJson()`.
 
+Example using PHP.Gt/Curl:
+--------------------------
+
 ```php
 $curl = new Curl("https://circleci.com/api/v1.1/project/github/PhpGt/Dom");
 $curl->exec();
 $json = $curl->outputJson();
 echo "Latest build status: " . $json[0]->status;
+```
 
+Example using PHP's native `curl_*` functions:
+----------------------------------------------
+
+```php
 // Using native functionality to achieve the same:
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, "https://circleci.com/api/v1.1/project/github/PhpGt/Dom");
