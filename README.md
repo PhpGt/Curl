@@ -23,8 +23,8 @@ $json = $curl->outputJson();
 echo "Latest build status: " . $json[0]->status;
 ```
 
-Example using PHP's native `curl_*` functions:
-----------------------------------------------
+Same example using PHP's native `curl_*` functions:
+---------------------------------------------------
 
 ```php
 // Using native functionality to achieve the same:
