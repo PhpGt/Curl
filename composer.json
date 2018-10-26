@@ -1,35 +1,36 @@
 {
-    "name": "phpgt/curl",
-    "description": "cURL object wrapper.",
-    "type": "library",
+	"name": "phpgt/curl",
+	"description": "cURL object wrapper.",
+	"type": "library",
 
-    "require": {
-        "php": ">=7.1.0",
-        "ext-curl": "*"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "7.2.7"
-    },
+	"require": {
+		"php": ">=7.1.0",
+		"ext-curl": "*"
+	},
 
-    "license": "MIT",
+	"require-dev": {
+		"phpunit/phpunit": "7.2.7"
+	},
 
-    "authors": [
-        {
-            "name": "Greg Bowler",
-            "email": "greg.bowler@g105b.com"
-        }
-    ],
+	"license": "MIT",
 
-    "autoload": {
-        "psr-4": {
-            "Gt\\Curl\\": "./src"
-        }
-    },
+	"authors": [
+	{
+		"name": "Greg Bowler",
+		"email": "greg.bowler@g105b.com"
+	}
+	],
 
-    "keywords": [
-        "curl",
-        "curl_multi",
-        "interface",
-        "http"
-    ]
+	"autoload": {
+		"psr-4": {
+			"Gt\\Curl\\": "./src"
+		}
+	},
+
+	"keywords": [
+		"curl",
+		"curl_multi",
+		"interface",
+		"http"
+	]
 }
