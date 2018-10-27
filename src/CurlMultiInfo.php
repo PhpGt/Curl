@@ -38,7 +38,7 @@ class CurlMultiInfo implements CurlMultiInfoInterface {
 	 * @see curl_multi_info_read
 	 * Resource of type curl indicates the handle which it concerns.
 	 */
-	public function getHandle() {
-		return $this->handle;
+	public function getHandle():CurlInterface {
+		return CurlObjectLookup::getObjectFromHandle($this->handle);
 	}
 }

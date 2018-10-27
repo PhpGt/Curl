@@ -60,7 +60,7 @@ interface CurlMultiInterface {
 	 * @see http://php.net/manual/en/function.curl-multi-info-read.php
 	 * @throws CurlException on failure
 	 */
-	public function infoRead(int &$msgsInQueue = null):CurlMultiInfoInterface;
+	public function infoRead(int &$msgsInQueue = null):?CurlMultiInfoInterface;
 
 	/**
 	 * Initialises a new cURL multi handle

@@ -18,5 +18,5 @@ interface CurlMultiInfoInterface {
 	 * @see curl_multi_info_read
 	 * Resource of type curl indicates the handle which it concerns.
 	 */
-	public function getHandle();
+	public function getHandle():CurlInterface;
 }
