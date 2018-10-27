@@ -149,6 +149,7 @@ class Curl implements CurlInterface {
 	 */
 	public function init(string $url = null):void {
 		$this->ch = curl_init($url);
+		CurlObjectLookup::add($this);
 	}
 
 	/**
