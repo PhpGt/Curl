@@ -7,7 +7,21 @@ Why? We wanted to lay an object oriented foundation for [PHP.Gt/Fetch](https://p
 
 ***
 
-// TODO: Put status badges here.
+<a href="https://circleci.com/gh/PhpGt/Curl" target="_blank">
+    <img src="https://badge.status.php.gt/curl-build.svg" alt="Build status" />
+</a>
+<a href="https://scrutinizer-ci.com/g/PhpGt/Curl" target="_blank">
+    <img src="https://badge.status.php.gt/curl-quality.svg" alt="Code quality" />
+</a>
+<a href="https://scrutinizer-ci.com/g/PhpGt/Curl" target="_blank">
+    <img src="https://badge.status.php.gt/curl-coverage.svg" alt="Code coverage" />
+</a>
+<a href="https://packagist.org/packages/PhpGt/Curl" target="_blank">
+    <img src="https://badge.status.php.gt/curl-version.svg" alt="Current version" />
+</a>
+<a href="https://www.php.gt/curl" target="_blank">
+    <img src="https://badge.status.php.gt/curl-docs.svg" alt="PHP.Gt/Curl documentation" />
+</a>
 
 Example usage: Get a JSON object from a remote source
 
