@@ -51,7 +51,15 @@ class Curl implements CurlInterface {
 	 * @throws NoOutputException
 	 */
 	public function output():string {
+// Buffer will be null before exec is called...
 		if(is_null($this->buffer)) {
+			$this->exec();
+		}
+
+		curl_close($this->ch);
+
+// ...But will always be a string after exec is called, even if empty.
+		if(strlen($this->buffer) === 0) {
 			throw new NoOutputException();
 		}
 
@@ -66,12 +74,8 @@ class Curl implements CurlInterface {
 		int $depth = 512,
 		int $options = 0
 	) {
-		if(is_null($this->buffer)) {
-			throw new NoOutputException();
-		}
-
 		$json = json_decode(
-			$this->buffer,
+			$this->output(),
 			false,
 			$depth,
 			$options
