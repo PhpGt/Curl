@@ -26,7 +26,7 @@ class CurlShare implements CurlShareInterface {
 	 * @see http://php.net/manual/en/function.curl-share-close.php
 	 */
 	public function close():void {
-		curl_share_close($this->sh);
+		@curl_share_close($this->sh);
 	}
 
 	/**

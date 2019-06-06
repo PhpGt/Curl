@@ -34,7 +34,7 @@ class CurlMulti implements CurlMultiInterface {
 	 * @see http://php.net/manual/en/function.curl-multi-close.php
 	 */
 	public function close():void {
-		curl_multi_close($this->mh);
+		@curl_multi_close($this->mh);
 	}
 
 	/**
