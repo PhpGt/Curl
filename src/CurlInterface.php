@@ -64,7 +64,7 @@ interface CurlInterface {
 	 * Get information regarding the transfer
 	 * @see http://php.net/manual/en/function.curl-getinfo.php
 	 */
-	public function getInfo(int $opt):string;
+	public function getInfo(int $opt);
 
 	/**
 	 * Initialize a cURL session

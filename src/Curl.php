@@ -136,7 +136,7 @@ class Curl implements CurlInterface {
 	 * Get information regarding the transfer
 	 * @see http://php.net/manual/en/function.curl-getinfo.php
 	 */
-	public function getInfo(int $opt):string {
+	public function getInfo(int $opt) {
 		if($opt <= 0) {
 			throw new CurlException(
 				"Option must be greater than zero, "
