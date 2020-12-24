@@ -7,7 +7,7 @@ Why? We wanted to lay an object oriented foundation for [PHP.Gt/Fetch](https://p
 
 ***
 
-<a href="https://circleci.com/gh/PhpGt/Curl" target="_blank">
+<a href="https://github.com/PhpGt/Curl/actions" target="_blank">
     <img src="https://badge.status.php.gt/curl-build.svg" alt="Build status" />
 </a>
 <a href="https://scrutinizer-ci.com/g/PhpGt/Curl" target="_blank">
