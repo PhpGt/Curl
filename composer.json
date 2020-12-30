@@ -3,10 +3,21 @@
 	"description": "cURL object wrapper.",
 	"type": "library",
 
+	"repositories": [
+		{
+			"type": "path",
+			"url": "/home/g105b/Code/PhpGt/Http",
+			"options": {
+				"symlink": true
+			}
+		}
+	],
+
 	"require": {
-		"php": ">=7.2.0",
+		"php": ">=7.4",
 		"ext-curl": "*",
 		"ext-json": "*",
+		"phpgt/http": "dev-45-type-safety",
 
 		"php-http/httplug": "^2.2.0"
 	},
