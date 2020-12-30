@@ -16,6 +16,7 @@ class CurlHttpClientTest extends TestCase {
 		$uri = self::createMock(Uri::class);
 		$uri->method("__toString")
 			->willReturn($exampleUrl);
+
 		$curl = self::createMock(Curl::class);
 		$curl->method("setOpt")
 			->withConsecutive(
@@ -35,7 +36,7 @@ class CurlHttpClientTest extends TestCase {
 			->willReturn($uri);
 
 		$sut = new CurlHttpClient();
-		$sut->setCurlClass($curl);
+		$sut->setCurlFactory(fn()=>$curl);
 		$response = $sut->sendRequest($request);
 		self::assertEquals($exampleResponseCode, $response->getStatusCode());
 		self::assertEquals($exampleBodyContent, $response->getBody()->getContents());
