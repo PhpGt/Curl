@@ -3,6 +3,7 @@ namespace Gt\Curl\Test;
 
 use Gt\Curl\Curl;
 use Gt\Curl\CurlHttpClient;
+use Gt\Curl\CurlMulti;
 use Gt\Http\Uri;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
@@ -30,6 +31,10 @@ class CurlHttpClientTest extends TestCase {
 			->method("getInfo")
 			->with(CURLINFO_RESPONSE_CODE)
 			->willReturn($exampleResponseCode);
+		$curlMulti = self::createMock(CurlMulti::class);
+		$curlMulti->expects(self::once())
+			->method("add")
+			->with($curl);
 
 		$request = self::createMock(RequestInterface::class);
 		$request->method("getUri")
@@ -37,6 +42,10 @@ class CurlHttpClientTest extends TestCase {
 
 		$sut = new CurlHttpClient();
 		$sut->setCurlFactory(fn()=>$curl);
+		$sut->setCurlMultiFactory(fn()=>$curlMulti);
+// TODO: Test is failing because the following line calls `wait()`, which waits for
+// promise resolution - it instantly resolves, because there is no actual curl activity
+// triggering the `writeFunction` to indicate that the headers are received.
 		$response = $sut->sendRequest($request);
 		self::assertEquals($exampleResponseCode, $response->getStatusCode());
 		self::assertEquals($exampleBodyContent, $response->getBody()->getContents());

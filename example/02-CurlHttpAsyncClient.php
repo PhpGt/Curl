@@ -39,13 +39,7 @@ $client->sendAsyncRequest($request3)->then(function(Response $response) {
 });
 
 echo "Executing concurrent requests...", PHP_EOL;
-
-do {
-	$active = $client->processAsync();
-	echo ".";
-	usleep(100_000);
-}
-while($active > 0);
+$client->wait();
 
 foreach($bodyList as $i => $body) {
 	echo "Body $i: ", $body, PHP_EOL;

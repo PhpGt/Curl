@@ -5,7 +5,6 @@ use CurlHandle;
 use Gt\Http\Header\ResponseHeaders;
 use Gt\Http\Response;
 use Gt\Promise\Deferred;
-use Gt\Promise\Promise;
 use Http\Client\HttpClient;
 use Http\Client\HttpAsyncClient;
 use Http\Promise\Promise as HttpPromiseInterface;
@@ -14,9 +13,12 @@ use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 class CurlHttpClient implements HttpClient, HttpAsyncClient {
+	const DEFAULT_ASYNC_LOOP_DELAY = 100_000;
+
 	/** @var callable */
 	private $curlFactory;
-
+	/** @var callable */
+	private $curlMultiFactory;
 	private CurlMulti $curlMulti;
 	private ?int $curlMultiStatus;
 	private int $active;
@@ -28,19 +30,26 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 	private array $responseList;
 	/** @var Deferred[] */
 	private array $deferredList;
+	private int $asyncLoopDelay;
+	/** @var callable[] */
+	private array $asyncCallbackList;
 
 	public function __construct() {
-		$this->curlMulti = new CurlMulti();
 		$this->curlMultiStatus = null;
 		$this->active = 0;
 		$this->curlList = [];
 		$this->headerList = [];
 		$this->responseList = [];
 		$this->deferredList = [];
+		$this->asyncLoopDelay = self::DEFAULT_ASYNC_LOOP_DELAY;
 	}
 
 	public function setCurlFactory(callable $factory):void {
 		$this->curlFactory = $factory;
+	}
+
+	public function setCurlMultiFactory(callable $factory):void {
+		$this->curlMultiFactory = $factory;
 	}
 
 	public function sendRequest(RequestInterface $request):ResponseInterface {
@@ -55,7 +64,7 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 				throw $reason;
 			}
 		);
-		$promise->wait();
+		$this->wait();
 		return $returnResponse;
 	}
 
@@ -64,8 +73,23 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 		$promise = $deferred->getPromise();
 		array_push($this->deferredList, $deferred);
 		$curl = $this->getNewCurl($request);
+
+		if(!isset($this->curlMulti)) {
+			$this->curlMulti = isset($this->curlMultiFactory)
+				? call_user_func($this->curlMultiFactory)
+				: new CurlMulti();
+		}
+
 		$this->curlMulti->add($curl);
 		return $promise;
+	}
+
+	public function wait():void {
+		do {
+			$active = $this->processAsync();
+			usleep($this->asyncLoopDelay);
+		}
+		while($active > 0);
 	}
 
 	public function asyncWaiting():int {
@@ -80,18 +104,22 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 		return 0;
 	}
 
+	public function registerAsyncCallback(callable $callback):void {
+		array_push($this->asyncCallbackList, $callback);
+	}
+
 	public function processAsync():int {
 		$active = 0;
 		$this->curlMultiStatus = $this->curlMulti->exec($active);
 		$this->active = $active;
 
 		do {
-			$info = curl_multi_info_read($this->curlMulti->getHandle(), $q);
+			$info = $this->curlMulti->infoRead($messagesInQueue);
 			if(!$info) {
 				continue;
 			}
 		}
-		while($info && $q > 0);
+		while($info && $messagesInQueue > 0);
 
 		return $active;
 	}
