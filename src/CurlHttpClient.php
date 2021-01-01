@@ -90,13 +90,6 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 			if(!$info) {
 				continue;
 			}
-
-//			if($info["msg"] === CURLMSG_DONE) {
-//				$doneIndex = $this->getCurlIndex($info["handle"]);
-//				$this->deferredList[$doneIndex]->resolve(
-//					$this->responseList[$doneIndex]
-//				);
-//			}
 		}
 		while($info && $q > 0);
 
