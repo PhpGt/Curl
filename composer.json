@@ -10,14 +10,22 @@
 			"options": {
 				"symlink": true
 			}
+		},
+		{
+			"type": "path",
+			"url": "/home/g105b/Code/PhpGt/Promise",
+			"options": {
+				"symlink": true
+			}
 		}
 	],
 
 	"require": {
-		"php": ">=7.4",
+		"php": ">=8.0",
 		"ext-curl": "*",
 		"ext-json": "*",
 		"phpgt/http": "dev-45-type-safety",
+		"phpgt/promise": "dev-master",
 
 		"php-http/httplug": "^2.2.0"
 	},

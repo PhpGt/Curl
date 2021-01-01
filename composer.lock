@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d684e121d7d60a381352b4a47efc0878",
+    "content-hash": "1268bc082eb48269f045fa54ba0f8cb0",
     "packages": [
         {
             "name": "php-http/httplug",
@@ -227,6 +227,42 @@
             ],
             "description": "Encapsulated user input.",
             "time": "2019-11-29T11:22:35+00:00"
+        },
+        {
+            "name": "phpgt/promise",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "/home/g105b/Code/PhpGt/Promise",
+                "reference": "0075e66a664ffe6a956c1a69129b294f79d68d31"
+            },
+            "require": {
+                "php": ">=7.4",
+                "php-http/httplug": "^2.2.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "9.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gt\\Promise\\": "./src"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Gt\\Promise\\Test\\": "./test/phpunit"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Pleasantly work with asynchronous code.",
+            "transport-options": {
+                "symlink": true,
+                "relative": false
+            }
         },
         {
             "name": "psr/http-client",
@@ -2392,12 +2428,13 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpgt/http": 20
+        "phpgt/http": 20,
+        "phpgt/promise": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.2.0",
+        "php": ">=7.4",
         "ext-curl": "*",
         "ext-json": "*"
     },

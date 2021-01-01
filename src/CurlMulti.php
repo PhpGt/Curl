@@ -1,9 +1,10 @@
 <?php
 namespace Gt\Curl;
 
+use CurlMultiHandle;
+
 class CurlMulti implements CurlMultiInterface {
-	/** @var resource */
-	protected $mh;
+	protected CurlMultiHandle $mh;
 
 	public function __construct() {
 		$this->init();
@@ -56,9 +57,8 @@ class CurlMulti implements CurlMultiInterface {
 
 	/**
 	 * Obtain the underlying Curl Multi resource, as created with curl_multi_init.
-	 * @return resource
 	 */
-	public function getHandle() {
+	public function getHandle():CurlMultiHandle {
 		return $this->mh;
 	}
 

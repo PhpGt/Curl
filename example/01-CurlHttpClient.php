@@ -11,6 +11,8 @@ $request = new Request(
 );
 
 $client = new CurlHttpClient();
+
+echo "Sending request...", PHP_EOL;
 $response = $client->sendRequest($request);
 $json = json_decode($response->getBody());
 

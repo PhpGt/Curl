@@ -1,11 +1,11 @@
 <?php
 namespace Gt\Curl;
 
+use CurlHandle;
+
 class Curl implements CurlInterface {
-	/** @var resource */
-	protected $ch;
-	/** @var string */
-	protected $buffer;
+	private CurlHandle $ch;
+	private string $buffer;
 
 	public function __construct(string $url = null) {
 		$this->init($url);
@@ -199,7 +199,7 @@ class Curl implements CurlInterface {
 	/**
 	 * Obtain the underlying curl resource, as created with curl_init.
 	 */
-	public function getHandle(){
+	public function getHandle():CurlHandle {
 		return $this->ch;
 	}
 
