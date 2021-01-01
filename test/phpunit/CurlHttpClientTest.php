@@ -4,9 +4,11 @@ namespace Gt\Curl\Test;
 use Gt\Curl\Curl;
 use Gt\Curl\CurlHttpClient;
 use Gt\Curl\CurlMulti;
+use Gt\Http\Request;
+use Gt\Http\Response;
+use Gt\Http\Stream;
 use Gt\Http\Uri;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\RequestInterface;
 
 class CurlHttpClientTest extends TestCase {
 	public function testSendRequest() {
@@ -27,25 +29,36 @@ class CurlHttpClientTest extends TestCase {
 		$curl->expects(self::once())
 			->method("exec")
 			->willReturn($exampleBodyContent);
-		$curl->expects(self::once())
-			->method("getInfo")
-			->with(CURLINFO_RESPONSE_CODE)
-			->willReturn($exampleResponseCode);
 		$curlMulti = self::createMock(CurlMulti::class);
 		$curlMulti->expects(self::once())
 			->method("add")
 			->with($curl);
+		$curlMulti->expects(self::once())
+			->method("exec")
+			->willReturnCallback(function() use($curl):int {
+				$curl->exec();
+				return 1;
+			});
 
-		$request = self::createMock(RequestInterface::class);
+		$request = self::createMock(Request::class);
 		$request->method("getUri")
 			->willReturn($uri);
+		$responseBody = self::createMock(Stream::class);
+		$responseBody->method("getContents")
+			->willReturn($exampleBodyContent);
+		$response = self::createMock(Response::class);
+		$response->method("getStatusCode")
+			->willReturn($exampleResponseCode);
+		$response->method("getBody")
+			->willReturn($responseBody);
 
 		$sut = new CurlHttpClient();
 		$sut->setCurlFactory(fn()=>$curl);
 		$sut->setCurlMultiFactory(fn()=>$curlMulti);
-// TODO: Test is failing because the following line calls `wait()`, which waits for
-// promise resolution - it instantly resolves, because there is no actual curl activity
-// triggering the `writeFunction` to indicate that the headers are received.
+		$sut->registerAsyncCallback(function() use($sut, $response) {
+			$deferreds = $sut->getDeferredList();
+			$deferreds[0]->resolve($response);
+		});
 		$response = $sut->sendRequest($request);
 		self::assertEquals($exampleResponseCode, $response->getStatusCode());
 		self::assertEquals($exampleBodyContent, $response->getBody()->getContents());

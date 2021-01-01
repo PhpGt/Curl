@@ -30,9 +30,9 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 	private array $responseList;
 	/** @var Deferred[] */
 	private array $deferredList;
-	private int $asyncLoopDelay;
 	/** @var callable[] */
 	private array $asyncCallbackList;
+	private int $asyncLoopDelay;
 
 	public function __construct() {
 		$this->curlMultiStatus = null;
@@ -41,6 +41,7 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 		$this->headerList = [];
 		$this->responseList = [];
 		$this->deferredList = [];
+		$this->asyncCallbackList = [];
 		$this->asyncLoopDelay = self::DEFAULT_ASYNC_LOOP_DELAY;
 	}
 
@@ -87,6 +88,10 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 	public function wait():void {
 		do {
 			$active = $this->processAsync();
+			foreach($this->asyncCallbackList as $callback) {
+				call_user_func($callback);
+			}
+
 			usleep($this->asyncLoopDelay);
 		}
 		while($active > 0);
@@ -122,6 +127,11 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 		while($info && $messagesInQueue > 0);
 
 		return $active;
+	}
+
+	/** @return Deferred[] */
+	public function getDeferredList():array {
+		return $this->deferredList;
 	}
 
 	private function getNewCurl(RequestInterface $request):Curl {
