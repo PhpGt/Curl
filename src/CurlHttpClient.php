@@ -33,6 +33,7 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 	/** @var callable[] */
 	private array $asyncCallbackList;
 	private int $asyncLoopDelay;
+	private array $curlOpt;
 
 	public function __construct() {
 		$this->curlMultiStatus = null;
@@ -43,6 +44,7 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 		$this->deferredList = [];
 		$this->asyncCallbackList = [];
 		$this->asyncLoopDelay = self::DEFAULT_ASYNC_LOOP_DELAY;
+		$this->curlOpt = [];
 	}
 
 	public function setCurlFactory(callable $factory):void {
@@ -51,6 +53,11 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 
 	public function setCurlMultiFactory(callable $factory):void {
 		$this->curlMultiFactory = $factory;
+	}
+
+	/** @param mixed $value */
+	public function setOpt(int $curlOpt, $value):void {
+
 	}
 
 	public function sendRequest(RequestInterface $request):ResponseInterface {
@@ -151,6 +158,10 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 			CURLOPT_WRITEFUNCTION,
 			fn($ch, $data) => $this->writeFunction($ch, $data)
 		);
+
+		foreach($this->curlOpt as $opt => $value) {
+			$curl->setOpt($opt, $value);
+		}
 
 		array_push($this->curlList, $curl);
 		array_push($this->headerList, $headers);
