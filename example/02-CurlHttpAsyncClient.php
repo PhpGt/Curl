@@ -23,7 +23,7 @@ $bodyList = [];
 
 function outputResponse(Response $response, int $requestNumber) {
 	global $bodyList;
-	echo "Received response from request number $requestNumber.", PHP_EOL;
+	echo "Received response from request number $requestNumber ({$response->getStatusCode()} {$response->getReasonPhrase()})", PHP_EOL;
 	$bodyList[$requestNumber] = $response->getBody();
 }
 
@@ -39,7 +39,7 @@ $client->sendAsyncRequest($request3)->then(function(Response $response) {
 });
 
 echo "Executing concurrent requests...", PHP_EOL;
-$client->wait();
+$client->completeAll();
 
 foreach($bodyList as $i => $body) {
 	echo "Body $i: ", $body, PHP_EOL;

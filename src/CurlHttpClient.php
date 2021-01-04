@@ -15,6 +15,9 @@ use Throwable;
 class CurlHttpClient implements HttpClient, HttpAsyncClient {
 	const DEFAULT_ASYNC_LOOP_DELAY = 100_000;
 
+	private CurlOptions $defaultOptions;
+	/** @var CurlOptions[] */
+	private array $optionsQueue;
 	/** @var callable */
 	private $curlFactory;
 	/** @var callable */
@@ -24,8 +27,6 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 	private int $active;
 	/** @var Curl[] */
 	private array $curlList;
-	/** @var ResponseHeaders[] */
-	private array $headerList;
 	/** @var Response[] */
 	private array $responseList;
 	/** @var Deferred[] */
@@ -33,18 +34,30 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 	/** @var callable[] */
 	private array $asyncCallbackList;
 	private int $asyncLoopDelay;
-	private array $curlOpt;
 
-	public function __construct() {
+	public function __construct(
+		CurlOptions $options = null
+	) {
+		if($options) {
+			$this->defaultOptions = $options;
+		}
+		$this->optionsQueue = [];
+
 		$this->curlMultiStatus = null;
 		$this->active = 0;
 		$this->curlList = [];
-		$this->headerList = [];
 		$this->responseList = [];
 		$this->deferredList = [];
 		$this->asyncCallbackList = [];
 		$this->asyncLoopDelay = self::DEFAULT_ASYNC_LOOP_DELAY;
-		$this->curlOpt = [];
+	}
+
+	public function setDefaultCurlOptions(CurlOptions $options):void {
+		$this->defaultOptions = $options;
+	}
+
+	public function pushCurlOptions(CurlOptions $options):void {
+		array_push($this->optionsQueue, $options);
 	}
 
 	public function setCurlFactory(callable $factory):void {
@@ -53,11 +66,6 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 
 	public function setCurlMultiFactory(callable $factory):void {
 		$this->curlMultiFactory = $factory;
-	}
-
-	/** @param mixed $value */
-	public function setOpt(int $curlOpt, $value):void {
-
 	}
 
 	public function sendRequest(RequestInterface $request):ResponseInterface {
@@ -72,7 +80,7 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 				throw $reason;
 			}
 		);
-		$this->wait();
+		$this->completeAll();
 		return $returnResponse;
 	}
 
@@ -88,11 +96,18 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 				: new CurlMulti();
 		}
 
+		$options = array_pop($this->optionsQueue);
+		if($options) {
+			foreach($options as $key => $value) {
+				$curl->setOpt($key, $value);
+			}
+		}
+
 		$this->curlMulti->add($curl);
 		return $promise;
 	}
 
-	public function wait():void {
+	public function completeAll():void {
 		do {
 			$active = $this->processAsync();
 			foreach($this->asyncCallbackList as $callback) {
@@ -147,7 +162,6 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 			: new Curl();
 
 		$curl->setOpt(CURLOPT_URL, $request->getUri());
-		$headers = new ResponseHeaders();
 		$response = new Response();
 
 		$curl->setOpt(
@@ -159,12 +173,13 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 			fn($ch, $data) => $this->writeFunction($ch, $data)
 		);
 
-		foreach($this->curlOpt as $opt => $value) {
-			$curl->setOpt($opt, $value);
+		if(isset($this->defaultOptions)) {
+			foreach($this->defaultOptions as $opt => $value) {
+				$curl->setOpt($opt, $value);
+			}
 		}
 
 		array_push($this->curlList, $curl);
-		array_push($this->headerList, $headers);
 		array_push($this->responseList, $response);
 
 		return $curl;
@@ -172,7 +187,17 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 
 	private function headerFunction(CurlHandle $ch, string $headerLine):int {
 		$curlIndex = $this->getCurlIndex($ch);
-		$headers = $this->headerList[$curlIndex];
+		$curl = $this->curlList[$curlIndex];
+		$response = $this->responseList[$curlIndex];
+
+		if(!$response->getStatusCode()) {
+			$response = $response->withStatus(
+				$curl->getInfo(CURLINFO_RESPONSE_CODE)
+			);
+			$response = $response->withProtocolVersion(
+				$curl->getInfo(CURLINFO_HTTP_VERSION)
+			);
+		}
 
 		$len = strlen($headerLine);
 		$headerParts = explode(
@@ -181,11 +206,14 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 			2
 		);
 
-		if(count($headerParts) < 2) {
-			return $len;
+		if(count($headerParts) >= 2) {
+			$response = $response->withAddedHeader(
+				$headerParts[0],
+				$headerParts[1]
+			);
 		}
 
-		$headers->add($headerParts[0], $headerParts[1]);
+		$this->responseList[$curlIndex] = $response;
 		return $len;
 	}
 
