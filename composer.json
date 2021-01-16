@@ -28,6 +28,12 @@
 		"phpstan/phpstan": ">=0.12.64"
 	},
 
+	"provide": {
+		"php-http/client-implementation": "1.0",
+		"php-http/async-client-implementation": "1.0",
+		"psr/http-client-implementation": "1.0"
+	},
+
 	"license": "MIT",
 
 	"authors": [
