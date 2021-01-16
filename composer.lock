@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1268bc082eb48269f045fa54ba0f8cb0",
+    "content-hash": "779b0f9ae436995469b41125cc308bb4",
     "packages": [
         {
             "name": "php-http/httplug",
@@ -162,12 +162,13 @@
             "dist": {
                 "type": "path",
                 "url": "/home/g105b/Code/PhpGt/Http",
-                "reference": "e12be1e16011c7406aad78f0da62e3995c300abd"
+                "reference": "1f56dda02a7ea2800b0ab4e36abb9ac974eac28a"
             },
             "require": {
-                "php": ">=7.2",
+                "php": ">=8.0",
                 "phpgt/cookie": "1.*",
                 "phpgt/input": "1.*",
+                "phpgt/promise": "^1.0.0",
                 "psr/http-message": "^1.0.1",
                 "willdurand/negotiation": "3.0.*"
             },
@@ -230,11 +231,17 @@
         },
         {
             "name": "phpgt/promise",
-            "version": "dev-master",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PhpGt/Promise.git",
+                "reference": "2a7e8382ab7be54d79798d3a3c0a748244ea92e2"
+            },
             "dist": {
-                "type": "path",
-                "url": "/home/g105b/Code/PhpGt/Promise",
-                "reference": "0075e66a664ffe6a956c1a69129b294f79d68d31"
+                "type": "zip",
+                "url": "https://api.github.com/repos/PhpGt/Promise/zipball/2a7e8382ab7be54d79798d3a3c0a748244ea92e2",
+                "reference": "2a7e8382ab7be54d79798d3a3c0a748244ea92e2",
+                "shasum": ""
             },
             "require": {
                 "php": ">=7.4",
@@ -250,19 +257,18 @@
                     "Gt\\Promise\\": "./src"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Gt\\Promise\\Test\\": "./test/phpunit"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Pleasantly work with asynchronous code.",
-            "transport-options": {
-                "symlink": true,
-                "relative": false
-            }
+            "funding": [
+                {
+                    "url": "https://github.com/phpgt",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-01-15T18:45:47+00:00"
         },
         {
             "name": "psr/http-client",
@@ -902,16 +908,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.64",
+            "version": "0.12.67",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "23eb1cb7ae125f45f1d0e48051bcf67a9a9b08aa"
+                "reference": "ced7a5d9c5dba908c1c00cea3f1d4ad74da71b86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/23eb1cb7ae125f45f1d0e48051bcf67a9a9b08aa",
-                "reference": "23eb1cb7ae125f45f1d0e48051bcf67a9a9b08aa",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/ced7a5d9c5dba908c1c00cea3f1d4ad74da71b86",
+                "reference": "ced7a5d9c5dba908c1c00cea3f1d4ad74da71b86",
                 "shasum": ""
             },
             "require": {
@@ -954,7 +960,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-12-21T11:59:02+00:00"
+            "time": "2021-01-14T14:16:19+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2255,16 +2261,16 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.20.0",
+            "version": "v1.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "f4ba089a5b6366e453971d3aad5fe8e897b37f41"
+                "reference": "c6c942b1ac76c82448322025e084cadc56048b4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/f4ba089a5b6366e453971d3aad5fe8e897b37f41",
-                "reference": "f4ba089a5b6366e453971d3aad5fe8e897b37f41",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/c6c942b1ac76c82448322025e084cadc56048b4e",
+                "reference": "c6c942b1ac76c82448322025e084cadc56048b4e",
                 "shasum": ""
             },
             "require": {
@@ -2276,7 +2282,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.20-dev"
+                    "dev-main": "1.22-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -2327,7 +2333,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-23T14:02:19+00:00"
+            "time": "2021-01-07T16:49:33+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -2428,13 +2434,12 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpgt/http": 20,
-        "phpgt/promise": 20
+        "phpgt/http": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.4",
+        "php": ">=8.0",
         "ext-curl": "*",
         "ext-json": "*"
     },
