@@ -2,8 +2,8 @@
 namespace Gt\Curl;
 
 use CurlHandle;
-use Gt\Http\Header\ResponseHeaders;
 use Gt\Http\Response;
+use Gt\Http\Stream;
 use Gt\Promise\Deferred;
 use Http\Client\HttpClient;
 use Http\Client\HttpAsyncClient;
@@ -85,7 +85,8 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 	}
 
 	public function sendAsyncRequest(RequestInterface $request):HttpPromiseInterface {
-		$deferred = new Deferred(fn() => $this->processAsync());
+		$deferred = new Deferred();
+		$deferred->addProcess(fn() => $this->processCurlMulti());
 		$promise = $deferred->getPromise();
 		array_push($this->deferredList, $deferred);
 		$curl = $this->getNewCurl($request);
@@ -109,7 +110,7 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 
 	public function completeAll():void {
 		do {
-			$active = $this->processAsync();
+			$active = $this->processCurlMulti();
 			foreach($this->asyncCallbackList as $callback) {
 				call_user_func($callback);
 			}
@@ -135,7 +136,7 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 		array_push($this->asyncCallbackList, $callback);
 	}
 
-	public function processAsync():int {
+	public function processCurlMulti():int {
 		$active = 0;
 		$this->curlMultiStatus = $this->curlMulti->exec($active);
 		$this->active = $active;
@@ -163,6 +164,7 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 
 		$curl->setOpt(CURLOPT_URL, $request->getUri());
 		$response = new Response();
+		$response = $response->withBody(new Stream());
 
 		$curl->setOpt(
 			CURLOPT_HEADERFUNCTION,
@@ -196,6 +198,10 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 			);
 			$response = $response->withProtocolVersion(
 				$curl->getInfo(CURLINFO_HTTP_VERSION)
+			);
+
+			$response = $response->withUri(
+				$curl->getInfo(CURLINFO_EFFECTIVE_URL)
 			);
 		}
 

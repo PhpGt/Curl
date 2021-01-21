@@ -2,7 +2,7 @@
 	"name": "phpgt/curl",
 	"description": "cURL object wrapper.",
 	"type": "library",
-
+	"minimum-stability": "dev",
 	"repositories": [
 		{
 			"type": "path",
@@ -18,7 +18,7 @@
 		"ext-curl": "*",
 		"ext-json": "*",
 		"phpgt/http": "dev-45-type-safety",
-		"phpgt/promise": "^1.0",
+		"phpgt/promise": "^2.0",
 
 		"php-http/httplug": "^2.2.0"
 	},
@@ -58,6 +58,15 @@
 		"curl",
 		"curl_multi",
 		"interface",
-		"http"
+		"http",
+		"async",
+		"asynchronous"
+	],
+
+	"funding": [
+		{
+			"type": "github",
+			"url": "https://github.com/sponsors/PhpGt"
+		}
 	]
 }
