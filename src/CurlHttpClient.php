@@ -14,6 +14,7 @@ use Throwable;
 
 class CurlHttpClient implements HttpClient, HttpAsyncClient {
 	const DEFAULT_ASYNC_LOOP_DELAY = 100_000;
+	const DEFAULT_USER_AGENT = "PhpGt/Curl";
 
 	private CurlOptions $defaultOptions;
 	/** @var CurlOptions[] */
@@ -89,7 +90,9 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 		$deferred->addProcess(fn() => $this->processCurlMulti());
 		$promise = $deferred->getPromise();
 		array_push($this->deferredList, $deferred);
-		$curl = $this->getNewCurl($request);
+		$curl = $this->createCurl($request);
+		$curlIndex = $this->getCurlIndex($curl->getHandle());
+		$deferred->addProcess(fn() => $this->responseList[$curlIndex]->asyncProcessStream());
 
 		if(!isset($this->curlMulti)) {
 			$this->curlMulti = isset($this->curlMultiFactory)
@@ -157,7 +160,7 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 		return $this->deferredList;
 	}
 
-	private function getNewCurl(RequestInterface $request):Curl {
+	private function createCurl(RequestInterface $request):Curl {
 		$curl = isset($this->curlFactory)
 			? call_user_func($this->curlFactory)
 			: new Curl();
@@ -179,6 +182,21 @@ class CurlHttpClient implements HttpClient, HttpAsyncClient {
 			foreach($this->defaultOptions as $opt => $value) {
 				$curl->setOpt($opt, $value);
 			}
+		}
+
+		$curl->setOpt(CURLOPT_USERAGENT, self::DEFAULT_USER_AGENT);
+
+		$httpHeaders = [];
+		foreach($request->getHeaders() as $name => $value) {
+			if(!is_array($value)) {
+				$value = [$value];
+			}
+			$headerValue = implode(", ", $value);
+
+			array_push($httpHeaders, "$name: $headerValue");
+		}
+		if(!empty($httpHeaders)) {
+			$curl->setOpt(CURLOPT_HTTPHEADER, $httpHeaders);
 		}
 
 		array_push($this->curlList, $curl);
