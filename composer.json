@@ -39,5 +39,12 @@
 		"curl_multi",
 		"interface",
 		"http"
+	],
+	
+	"funding": [
+		{
+			"type": "github",
+			"url": "https://github.com/sponsors/PhpGt"
+		}
 	]
 }
