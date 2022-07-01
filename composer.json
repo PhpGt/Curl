@@ -10,8 +10,8 @@
 	},
 
 	"require-dev": {
-		"phpunit/phpunit": "9.*",
-		"phpstan/phpstan": ">=0.12.64"
+		"phpstan/phpstan": "v1.8.0",
+		"phpunit/phpunit": "v9.5.21"
 	},
 
 	"license": "MIT",
@@ -40,7 +40,7 @@
 		"interface",
 		"http"
 	],
-	
+
 	"funding": [
 		{
 			"type": "github",
