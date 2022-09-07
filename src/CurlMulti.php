@@ -26,7 +26,7 @@ class CurlMulti implements CurlMultiInterface {
 	 * @throws CurlException if a CURLM_XXX error is made
 	 */
 	public function add(CurlInterface $curl):void {
-		$curl->setOpt(CURLOPT_RETURNTRANSFER, true);
+//		$curl->setOpt(CURLOPT_RETURNTRANSFER, true);
 		curl_multi_add_handle($this->mh, $curl->getHandle());
 	}
 
@@ -69,7 +69,7 @@ class CurlMulti implements CurlMultiInterface {
 	 * @return string the content of a cURL handle if CURLOPT_RETURNTRANSFER is set
 	 */
 	public function getContent(CurlInterface $curl):string {
-		return curl_multi_getcontent($curl->getHandle());
+		return curl_multi_getcontent($curl->getHandle()) ?? "";
 	}
 
 	/**
