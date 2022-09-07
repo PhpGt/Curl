@@ -2,8 +2,8 @@
 namespace Gt\Curl;
 
 class CurlObjectLookup {
-	protected static $objectMap = [];
-	protected static $resourceMap = [];
+	protected static array $objectMap = [];
+	protected static array $resourceMap = [];
 
 	public static function add(CurlInterface $curl):void {
 		self::$objectMap []= $curl;
