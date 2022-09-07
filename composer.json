@@ -4,9 +4,10 @@
 	"type": "library",
 
 	"require": {
-		"php": ">=7.2.0",
+		"php": ">=7.4",
 		"ext-curl": "*",
-		"ext-json": "*"
+		"ext-json": "*",
+		"phpgt/json": "^v1.0"
 	},
 
 	"require-dev": {

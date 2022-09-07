@@ -31,10 +31,13 @@ Example using PHP.Gt/Curl:
 --------------------------
 
 ```php
-$curl = new Curl("https://circleci.com/api/v1.1/project/github/PhpGt/Dom");
+$curl = new Curl("https://catfact.ninja/fact");
 $curl->exec();
 $json = $curl->outputJson();
-echo "Latest build status: " . $json[0]->status;
+echo "Here's a cat fact: {$json->getString("fact")}";
+echo PHP_EOL;
+echo "The fact's length is {$json->getInt("length")} characters.";
+echo PHP_EOL;
 ```
 
 Same example using PHP's native `curl_*` functions:
@@ -43,7 +46,7 @@ Same example using PHP's native `curl_*` functions:
 ```php
 // Using native functionality to achieve the same:
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, "https://circleci.com/api/v1.1/project/github/PhpGt/Dom");
+curl_setopt($ch, CURLOPT_URL, "https://catfact.ninja/fact");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $result = curl_exec($ch);
 if(false === $result) {
@@ -53,5 +56,10 @@ $json = json_decode($result);
 if(is_null($json)) {
 	die("JSON decoding error: " . json_last_error_msg());
 }
-echo "Latest build status: " . $json[0]->status;
-``` 
+
+// Note: No type checks are made on the `fact` and `length` properties here.
+echo "Here's a cat fact: {$json->fact}";
+echo PHP_EOL;
+echo "The fact's length is {$json->length} characters.";
+echo PHP_EOL;
+```

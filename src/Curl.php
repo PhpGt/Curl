@@ -1,11 +1,13 @@
 <?php
 namespace Gt\Curl;
 
+use Gt\Json\JsonObject;
+use Gt\Json\JsonObjectBuilder;
+
 class Curl implements CurlInterface {
 	/** @var resource */
 	protected $ch;
-	/** @var string */
-	protected $buffer;
+	protected string $buffer;
 
 	public function __construct(string $url = null) {
 		$this->init($url);
@@ -73,19 +75,9 @@ class Curl implements CurlInterface {
 	public function outputJson(
 		int $depth = 512,
 		int $options = 0
-	) {
-		$json = json_decode(
-			$this->output(),
-			false,
-			$depth,
-			$options
-		);
-		if(is_null($json)) {
-			$errorMessage = json_last_error_msg();
-			throw new JsonDecodeException($errorMessage);
-		}
-
-		return $json;
+	):JsonObject {
+		$builder = new JsonObjectBuilder();
+		return $builder->fromJsonString($this->output());
 	}
 
 	/**
@@ -128,7 +120,7 @@ class Curl implements CurlInterface {
 		if(true === $response) {
 			$response = $this->buffer;
 		}
-		
+
 		return $response;
 	}
 
@@ -207,6 +199,9 @@ class Curl implements CurlInterface {
 	 * Gets all CURLINFO_ data, identical to calling curl_getinfo with no arguments.
 	 */
 	public function getAllInfo():array {
-		return curl_getinfo($this->ch, 0);
+		$result = curl_getinfo($this->ch, 0);
+		if(!$result) {
+			return [];
+		}
 	}
 }
