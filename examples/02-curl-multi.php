@@ -1,4 +1,10 @@
 <?php
+/*
+ * This example shows how more than one Curl request can be executed
+ * simultaneously by adding the Curl object to a CurlMulti object. This means
+ * the total time waiting for N responses is equal to the slowest response,
+ * rather than the sum of all responses.
+ */
 use Gt\Curl\Curl;
 use Gt\Curl\CurlMulti;
 
