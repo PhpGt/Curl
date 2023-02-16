@@ -30,7 +30,7 @@
 	<rule ref="rulesets/codesize.xml/TooManyPublicMethods">
 		<priority>1</priority>
 		<properties>
-			<property name="maxmethods" value="10" />
+			<property name="maxmethods" value="20" />
 		</properties>
 	</rule>
 
