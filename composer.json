@@ -12,16 +12,17 @@
 
 	"require-dev": {
 		"phpstan/phpstan": "^1.9",
-		"phpunit/phpunit": "^10.0"
+		"phpunit/phpunit": "^10.0",
+		"phpmd/phpmd": "^2.13"
 	},
 
 	"license": "MIT",
 
 	"authors": [
-	{
-		"name": "Greg Bowler",
-		"email": "greg.bowler@g105b.com"
-	}
+		{
+			"name": "Greg Bowler",
+			"email": "greg.bowler@g105b.com"
+		}
 	],
 
 	"autoload": {
