@@ -109,6 +109,30 @@ jobs:
           php_version: ${{ matrix.php }}
           path: src/
 
+  phpmd:
+    runs-on: ubuntu-latest
+    needs: [ composer ]
+    strategy:
+      matrix:
+        php: [ 8.1, 8.2 ]
+
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: build-artifact
+          path: /tmp/github-actions
+
+      - name: Extract build archive
+        run: tar -xvf /tmp/github-actions/build.tar ./
+
+      - name: PHP Mess Detector
+        uses: php-actions/phpmd@master
+        with:
+          php_version: ${{ matrix.php }}
+          path: src/
+          output: text
+          ruleset: test/phpmd/ruleset.xml
+
   remove_old_artifacts:
     runs-on: ubuntu-latest
 
