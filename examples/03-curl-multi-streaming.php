@@ -34,6 +34,7 @@ foreach($urlArray as $url) {
 		echo "BODY: $rawBody\n";
 		return strlen($rawBody);
 	});
+	$curl->setOpt(CURLOPT_TIMEOUT, 10);
 	$multi->add($curl);
 }
 

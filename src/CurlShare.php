@@ -1,9 +1,10 @@
 <?php
 namespace Gt\Curl;
 
+use CurlShareHandle;
+
 class CurlShare implements CurlShareInterface {
-	/** @var resource */
-	protected $sh;
+	protected CurlShareHandle $sh;
 
 	public function __construct() {
 		$this->init();

@@ -1,17 +1,17 @@
 <?php
 namespace Gt\Curl;
 
+use CurlHandle;
+
 /**
  * @see http://php.net/manual/en/function.curl-multi-info-read.php
  */
 class CurlMultiInfo implements CurlMultiInfoInterface {
-	/** @var int The CURLMSG_DONE constant */
-	protected $message;
-	/** @var int */
-	protected $result;
-	/** @var resource */
-	protected $handle;
+	protected string $message;
+	protected int $result;
+	protected CurlHandle $handle;
 
+	/** @param array<string, mixed> $curlMultiInfoRead */
 	public function __construct(array $curlMultiInfoRead) {
 		$this->message = $curlMultiInfoRead["msg"];
 		$this->result = $curlMultiInfoRead["result"];

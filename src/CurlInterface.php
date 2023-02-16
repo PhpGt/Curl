@@ -1,6 +1,8 @@
 <?php
 namespace Gt\Curl;
 
+use CurlHandle;
+
 /**
  * Defines all methods associated with PHP's internal Curl handler,
  * ensuring that objects that Curl object implementations contain
@@ -64,7 +66,7 @@ interface CurlInterface {
 	 * Get information regarding the transfer
 	 * @see http://php.net/manual/en/function.curl-getinfo.php
 	 */
-	public function getInfo(int $opt);
+	public function getInfo(int $opt):mixed;
 
 	/**
 	 * Initialize a cURL session
@@ -88,10 +90,11 @@ interface CurlInterface {
 	 * Set an option for the cURL transfer
 	 * @see http://php.net/manual/en/function.curl-setopt.php
 	 */
-	public function setOpt(int $option, $value):bool;
+	public function setOpt(int $option, mixed $value):bool;
 
 	/**
 	 * Set multiple options for the cURL transfer
+	 * @param array<int, mixed> $options
 	 * @see http://php.net/manual/en/function.curl-setopt-array.php
 	 */
 	public function setOptArray(array $options):bool;
@@ -105,11 +108,12 @@ interface CurlInterface {
 	/**
 	 * Obtain the underlying curl resource, as created with curl_init.
 	 */
-	public function getHandle();
+	public function getHandle():CurlHandle;
 
 	/**
 	 * Gets all CURLINFO_ data, identical to calling
 	 * with no arguments.
+	 * @return array<string, mixed>
 	 */
 	public function getAllInfo():array;
 }

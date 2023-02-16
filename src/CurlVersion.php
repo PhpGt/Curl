@@ -2,15 +2,15 @@
 namespace Gt\Curl;
 
 class CurlVersion implements CurlVersionInterface {
-	protected $data;
+	/** @param array<string, string> $curlVersionData */
+	public function __construct(
+		protected array $curlVersionData
+	) {}
 
-	public function __construct(array $curlVersionData) {
-		$this->data = $curlVersionData;
-	}
-
-	public function __get(string $key) {
+	/** @return null|string|array<string, mixed> */
+	public function __get(string $key):null|string|array {
 		$key = $this->toSnakeCase($key);
-		return $this->data[$key] ?? null;
+		return $this->curlVersionData[$key] ?? null;
 	}
 
 	protected function toSnakeCase(string $input):string {

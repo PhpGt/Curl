@@ -1,6 +1,8 @@
 <?php
 namespace Gt\Curl;
 
+use CurlMultiHandle;
+
 /**
  * Defines all methods associated with PHP's internal Curl Multi handler,
  * ensuring that objects that Curl Multi object implementations contain
@@ -43,10 +45,10 @@ interface CurlMultiInterface {
 	public function exec(int &$stillRunning):int;
 
 	/**
-	 * Obtain the underlying Curl Multi resource, as created with curl_multi_init.
-	 * @return resource
+	 * Obtain the underlying Curl Multi resource, as created with
+	 * curl_multi_init.
 	 */
-	public function getHandle();
+	public function getHandle():CurlMultiHandle;
 
 	/**
 	 * Return the content of a cURL handle if CURLOPT_RETURNTRANSFER is set
@@ -89,5 +91,5 @@ interface CurlMultiInterface {
 	 * @see http://php.net/manual/en/function.curl-multi-setopt.php
 	 * @throws CurlException on failure
 	 */
-	public function setOpt(int $option, $value):void;
+	public function setOpt(int $option, mixed $value):void;
 }
