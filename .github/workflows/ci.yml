@@ -41,6 +41,8 @@ jobs:
 
       - name: PHP Unit tests
         uses: php-actions/phpunit@v3
+        env:
+          XDEBUG_MODE: cover
         with:
           php_extensions: xdebug
           configuration: test/phpunit/phpunit.xml
