@@ -44,16 +44,17 @@
 		"http"
 	],
 
-	"funding": [
-		{
-			"type": "github",
-			"url": "https://github.com/sponsors/PhpGt"
-		}
-	],
 	"scripts": {
 		"phpunit": "vendor/bin/phpunit -c test/phpunit/phpunit.xml",
 		"codesniffer": "vendor/bin/phpcs --standard=test/codesniffer-ruleset.xml src",
 		"phpmd": "vendor/bin/phpmd src/ text test/phpmd-ruleset.xml",
 		"phpstan": "vendor/bin/phpstan analyse src/"
-	}
+	},
+
+	"funding": [
+		{
+			"type": "github",
+			"url": "https://github.com/sponsors/PhpGt"
+		}
+	]
 }
