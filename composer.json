@@ -46,8 +46,8 @@
 
 	"scripts": {
 		"phpunit": "vendor/bin/phpunit -c test/phpunit/phpunit.xml",
-		"codesniffer": "vendor/bin/phpcs --standard=test/codesniffer-ruleset.xml src",
-		"phpmd": "vendor/bin/phpmd src/ text test/phpmd-ruleset.xml",
+		"codesniffer": "vendor/bin/phpcs --standard=ruleset-codesniffer.xml src",
+		"phpmd": "vendor/bin/phpmd src/ text ruleset-phpmd.xml",
 		"phpstan": "vendor/bin/phpstan analyse src/"
 	},
 
