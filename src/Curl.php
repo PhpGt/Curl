@@ -194,7 +194,8 @@ class Curl implements CurlInterface {
 	}
 
 	/**
-	 * Gets all CURLINFO_ data, identical to calling curl_getinfo with no arguments.
+	 * Gets all CURLINFO_ data, identical to calling curl_getinfo with no
+	 * arguments.
 	 * @return array<mixed>
 	 */
 	public function getAllInfo():array {
