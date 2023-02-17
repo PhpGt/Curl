@@ -126,7 +126,7 @@ jobs:
         run: tar -xvf /tmp/github-actions/build.tar ./
 
       - name: PHP Mess Detector
-        uses: php-actions/phpmd@master
+        uses: php-actions/phpmd@v1
         with:
           php_version: ${{ matrix.php }}
           path: src/
