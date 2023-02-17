@@ -3,6 +3,7 @@
 	<description>Created from PHP.Gt/Styleguide</description>
 	<arg name="extensions" value="php" />
 	<autoload>./vendor/autoload.php</autoload>
+	<file>src/</file>
 
 	<rule ref="Generic.Classes.DuplicateClassName" />
 	<rule ref="Generic.Classes.OpeningBraceSameLine" />
