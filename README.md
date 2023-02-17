@@ -10,10 +10,10 @@ Why? We wanted to lay an object oriented foundation for [PHP.Gt/Fetch](https://p
 <a href="https://github.com/PhpGt/Curl/actions" target="_blank">
     <img src="https://badge.status.php.gt/curl-build.svg" alt="Build status" />
 </a>
-<a href="https://scrutinizer-ci.com/g/PhpGt/Curl" target="_blank">
+<a href="https://app.codacy.com/gh/PhpGt/Curl" target="_blank">
     <img src="https://badge.status.php.gt/curl-quality.svg" alt="Code quality" />
 </a>
-<a href="https://scrutinizer-ci.com/g/PhpGt/Curl" target="_blank">
+<a href="https://app.codecov.io/gh/PhpGt/Curl" target="_blank">
     <img src="https://badge.status.php.gt/curl-coverage.svg" alt="Code coverage" />
 </a>
 <a href="https://packagist.org/packages/PhpGt/Curl" target="_blank">
