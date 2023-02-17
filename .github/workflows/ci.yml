@@ -154,7 +154,7 @@ jobs:
         with:
           php_version: ${{ matrix.php }}
           path: src/
-          standard: phpmd.xml
+          standard: phpcs.xml
 
   remove_old_artifacts:
     runs-on: ubuntu-latest
