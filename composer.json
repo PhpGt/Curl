@@ -4,24 +4,25 @@
 	"type": "library",
 
 	"require": {
-		"php": ">=7.4",
+		"php": ">=8.1",
 		"ext-curl": "*",
 		"ext-json": "*",
-		"phpgt/json": "^v1.0"
+		"phpgt/json": "^1.2"
 	},
 
 	"require-dev": {
-		"phpstan/phpstan": "^v1.8",
-		"phpunit/phpunit": "^v9.5"
+		"phpstan/phpstan": "^1.9",
+		"phpunit/phpunit": "^10.0",
+		"phpmd/phpmd": "^2.13"
 	},
 
 	"license": "MIT",
 
 	"authors": [
-	{
-		"name": "Greg Bowler",
-		"email": "greg.bowler@g105b.com"
-	}
+		{
+			"name": "Greg Bowler",
+			"email": "greg.bowler@g105b.com"
+		}
 	],
 
 	"autoload": {

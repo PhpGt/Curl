@@ -1,15 +1,17 @@
 <?php
 namespace Gt\Curl;
 
+use CurlHandle;
+use Gt\Json\JsonDecodeException;
 use Gt\Json\JsonObject;
 use Gt\Json\JsonObjectBuilder;
 
 class Curl implements CurlInterface {
-	/** @var resource */
-	protected $ch;
-	protected string $buffer;
+	protected CurlHandle $ch;
+	protected ?string $buffer;
 
 	public function __construct(string $url = null) {
+		$this->buffer = null;
 		$this->init($url);
 	}
 
@@ -18,7 +20,7 @@ class Curl implements CurlInterface {
 	 * @see http://php.net/manual/en/function.curl-close.php
 	 */
 	public function __destruct() {
-		@curl_close($this->ch);
+		curl_close($this->ch);
 	}
 
 	/**
@@ -35,9 +37,7 @@ class Curl implements CurlInterface {
 	public static function version(
 		int $age = CURLVERSION_NOW
 	):CurlVersionInterface {
-		return new CurlVersion(
-			curl_version($age)
-		);
+		return new CurlVersion(curl_version());
 	}
 
 	/**
@@ -76,7 +76,7 @@ class Curl implements CurlInterface {
 		int $depth = 512,
 		int $options = 0
 	):JsonObject {
-		$builder = new JsonObjectBuilder();
+		$builder = new JsonObjectBuilder($depth, $options);
 		return $builder->fromJsonString($this->output());
 	}
 
@@ -128,7 +128,7 @@ class Curl implements CurlInterface {
 	 * Get information regarding the transfer
 	 * @see http://php.net/manual/en/function.curl-getinfo.php
 	 */
-	public function getInfo(int $opt) {
+	public function getInfo(int $opt):mixed {
 		if($opt <= 0) {
 			throw new CurlException(
 				"Option must be greater than zero, "
@@ -168,7 +168,7 @@ class Curl implements CurlInterface {
 	 * Set an option for the cURL transfer
 	 * @see http://php.net/manual/en/function.curl-setopt.php
 	 */
-	public function setOpt(int $option, $value):bool {
+	public function setOpt(int $option, mixed $value):bool {
 		return curl_setopt($this->ch, $option, $value);
 	}
 
@@ -191,17 +191,17 @@ class Curl implements CurlInterface {
 	/**
 	 * Obtain the underlying curl resource, as created with curl_init.
 	 */
-	public function getHandle(){
+	public function getHandle():CurlHandle {
 		return $this->ch;
 	}
 
 	/**
 	 * Gets all CURLINFO_ data, identical to calling curl_getinfo with no arguments.
+	 * @return array<mixed>
 	 */
 	public function getAllInfo():array {
+		/** @var array<string, mixed>|false $result */
 		$result = curl_getinfo($this->ch, 0);
-		if(!$result) {
-			return [];
-		}
+		return $result ?: [];
 	}
 }
