@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<ruleset name="PHP.Gt Standard" namespace="Gt\CS\Standard">
+	<description>Created from PHP.Gt/Styleguide</description>
+	<arg name="extensions" value="php" />
+	<autoload>./vendor/autoload.php</autoload>
+
+	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter" />
+	<rule ref="Generic.Files.LineEndings" />
+</ruleset>
