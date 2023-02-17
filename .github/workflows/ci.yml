@@ -131,7 +131,7 @@ jobs:
           php_version: ${{ matrix.php }}
           path: src/
           output: text
-          ruleset: .phpmd.xml
+          ruleset: phpmd.xml
 
   remove_old_artifacts:
     runs-on: ubuntu-latest
