@@ -27,9 +27,7 @@ interface CurlInterface {
 	 * Gets cURL version information
 	 * @see http://php.net/manual/en/function.curl-version.php
 	 */
-	public static function version(
-		int $age = CURLVERSION_NOW
-	):CurlVersionInterface;
+	public static function version():CurlVersionInterface;
 
 	/**
 	 * Return string describing the given error code

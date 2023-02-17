@@ -10,6 +10,7 @@ namespace Gt\Curl;
  * @property-read string $host Information about the host where cURL was built
  * @property-read int $age
  * @property-read int $features A bitmask of the CURL_VERSION_XXX constants
- * @property-read array<string> $protocols An array of protocols names supported by cURL
+ * @property-read array<string> $protocols An array of protocols names
+ * supported by cURL
  */
 interface CurlVersionInterface {}
