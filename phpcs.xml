@@ -2,7 +2,7 @@
 <ruleset name="PHP.Gt Standard" namespace="Gt\CS\Standard">
 	<description>Created from PHP.Gt/Styleguide</description>
 	<arg name="extensions" value="php" />
-	<autoload>./vendor/autoload.php</autoload>
+	<autoload>vendor/autoload.php</autoload>
 
 	<rule ref="Generic.Classes.DuplicateClassName" />
 	<rule ref="Generic.Classes.OpeningBraceSameLine" />
