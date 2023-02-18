@@ -150,7 +150,7 @@ jobs:
         run: tar -xvf /tmp/github-actions/build.tar ./
 
       - name: PHP Code Sniffer
-        uses: php-actions/phpcs@master
+        uses: php-actions/phpcs@v1
         with:
           php_version: ${{ matrix.php }}
           path: src/
