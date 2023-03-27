@@ -191,7 +191,7 @@ class CurlTest extends TestCase {
 	public function testOutput_noBuffer():void {
 		$sut = new Curl();
 		self::expectException(CurlException::class);
-		self::expectExceptionMessage("No URL set!");
+		self::expectExceptionMessage("No URL set");
 		$sut->output();
 	}
 
