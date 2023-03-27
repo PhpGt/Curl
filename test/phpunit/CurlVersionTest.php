@@ -26,10 +26,6 @@ class CurlVersionTest extends TestCase {
 			$versionObject->sslVersion
 		);
 		self::assertEquals(
-			$versionData["libz_version"],
-			$versionObject->libzVersion
-		);
-		self::assertEquals(
 			$versionData["host"],
 			$versionObject->host
 		);

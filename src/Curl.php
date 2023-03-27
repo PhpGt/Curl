@@ -202,7 +202,7 @@ class Curl implements CurlInterface {
 	 */
 	public function getAllInfo():array {
 		/** @var array<string, mixed>|false $result */
-		$result = curl_getinfo($this->ch, 0);
+		$result = curl_getinfo($this->ch);
 		return $result ?: [];
 	}
 }
