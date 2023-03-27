@@ -7,7 +7,7 @@ interface CurlMultiInfoInterface {
 	 * The CURLMSG_DONE constant. Other return values are currently not
 	 * available.
 	 */
-	public function getMessage():string;
+	public function getMessage():int;
 
 	/**
 	 * @see curl_multi_info_read
