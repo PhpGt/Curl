@@ -25,4 +25,8 @@ class CurlObjectLookupTest extends TestCase {
 		self::assertSame($curlInterface1, CurlObjectLookup::getObjectFromHandle($curlHandle1));
 		self::assertSame($curlInterface3, CurlObjectLookup::getObjectFromHandle($curlHandle3));
 	}
+
+	public function testGetObjectFromHandle_none():Void {
+		self::assertNull(CurlObjectLookup::getObjectFromHandle(curl_init()));
+	}
 }
