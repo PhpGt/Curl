@@ -17,7 +17,7 @@ interface CurlMultiInterface {
 	 * Returns a text error message describing the given CURLM error code.
 	 * @see http://php.net/manual/en/function.curl-multi-strerror.php
 	 */
-	public static function strerror(int $errorNum):string;
+	public static function strError(int $errorNum):string;
 
 	/**
 	 * @see curl_multi_add_handle()

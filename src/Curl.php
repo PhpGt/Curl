@@ -20,7 +20,9 @@ class Curl implements CurlInterface {
 	 * @see http://php.net/manual/en/function.curl-close.php
 	 */
 	public function __destruct() {
-		curl_close($this->ch);
+		if(isset($this->ch)) {
+			curl_close($this->ch);
+		}
 	}
 
 	/**
@@ -200,7 +202,7 @@ class Curl implements CurlInterface {
 	 */
 	public function getAllInfo():array {
 		/** @var array<string, mixed>|false $result */
-		$result = curl_getinfo($this->ch, 0);
+		$result = curl_getinfo($this->ch);
 		return $result ?: [];
 	}
 }
