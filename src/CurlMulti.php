@@ -27,8 +27,6 @@ class CurlMulti implements CurlMultiInterface {
 	 * @throws CurlException if a CURLM_XXX error is made
 	 */
 	public function add(CurlInterface $curl):void {
-// The RETURNTRANSFER option must be set to be able to use the internal buffers.
-		$curl->setOpt(CURLOPT_RETURNTRANSFER, true);
 		curl_multi_add_handle($this->mh, $curl->getHandle());
 	}
 

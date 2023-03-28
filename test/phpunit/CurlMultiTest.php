@@ -20,9 +20,6 @@ class CurlMultiTest extends TestCase {
 	public function testAdd():void {
 		$curlInterface = self::createMock(CurlInterface::class);
 		$curlInterface->expects(self::once())
-			->method("setOpt")
-			->with(CURLOPT_RETURNTRANSFER, true);
-		$curlInterface->expects(self::once())
 			->method("getHandle")
 			->willReturn(curl_init());
 		$sut = new CurlMulti();
@@ -76,6 +73,7 @@ class CurlMultiTest extends TestCase {
 			}
 		}
 		$curl = new Curl("http://localhost:$port");
+		$curl->setOpt(CURLOPT_RETURNTRANSFER, true);
 		$sut = new CurlMulti();
 		$sut->add($curl);
 		$stillRunning = 0;
