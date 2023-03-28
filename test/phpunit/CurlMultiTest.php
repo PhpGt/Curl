@@ -20,11 +20,34 @@ class CurlMultiTest extends TestCase {
 	public function testAdd():void {
 		$curlInterface = self::createMock(CurlInterface::class);
 		$curlInterface->expects(self::once())
-			->method("setOpt")
-			->with(CURLOPT_RETURNTRANSFER, true);
-		$curlInterface->expects(self::once())
 			->method("getHandle")
 			->willReturn(curl_init());
+		$sut = new CurlMulti();
+		$sut->add($curlInterface);
+	}
+
+	public function testAdd_noExistingWriteFunction():void {
+		$curlInterface = self::createMock(CurlInterface::class);
+		$curlInterface->method("getHandle")
+			->willReturn(curl_init());
+		$curlInterface->method("getWriteFunction")
+			->willReturn(null);
+		$curlInterface->expects(self::once())
+			->method("setOpt")
+			->with(CURLOPT_WRITEFUNCTION, self::anything());
+		$sut = new CurlMulti();
+		$sut->add($curlInterface);
+	}
+
+	public function testAdd_existingWriteFunction():void {
+		$curlInterface = self::createMock(CurlInterface::class);
+		$curlInterface->method("getHandle")
+			->willReturn(curl_init());
+		$curlInterface->method("getWriteFunction")
+			->willReturn(function() {});
+		$curlInterface->expects(self::never())
+			->method("setOpt")
+			->with(CURLOPT_WRITEFUNCTION, self::anything());
 		$sut = new CurlMulti();
 		$sut->add($curlInterface);
 	}
@@ -76,6 +99,7 @@ class CurlMultiTest extends TestCase {
 			}
 		}
 		$curl = new Curl("http://localhost:$port");
+		$curl->setOpt(CURLOPT_RETURNTRANSFER, true);
 		$sut = new CurlMulti();
 		$sut->add($curl);
 		$stillRunning = 0;

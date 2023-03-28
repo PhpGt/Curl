@@ -1,12 +1,19 @@
 <?php
 namespace Gt\Curl;
 
+use CurlHandle;
 use CurlMultiHandle;
 
 class CurlMulti implements CurlMultiInterface {
 	protected CurlMultiHandle $mh;
+	/** @var array<int, CurlHandle> */
+	protected array $curlHandleArray;
+	/** @var array<int, string> */
+	protected array $responseBodyArray;
 
 	public function __construct() {
+		$this->curlHandleArray = [];
+		$this->responseBodyArray = [];
 		$this->init();
 	}
 
@@ -27,9 +34,22 @@ class CurlMulti implements CurlMultiInterface {
 	 * @throws CurlException if a CURLM_XXX error is made
 	 */
 	public function add(CurlInterface $curl):void {
-// The RETURNTRANSFER option must be set to be able to use the internal buffers.
-		$curl->setOpt(CURLOPT_RETURNTRANSFER, true);
-		curl_multi_add_handle($this->mh, $curl->getHandle());
+		$handle = $curl->getHandle();
+		array_push($this->curlHandleArray, $handle);
+		array_push($this->responseBodyArray, "");
+
+		$existingWrite = $curl->getWriteFunction();
+		if(!$existingWrite) {
+			$curl->setOpt(
+				CURLOPT_WRITEFUNCTION,
+				function (CurlHandle $ch, string $rawBody):int {
+					$index = array_search($ch, $this->curlHandleArray);
+					$this->responseBodyArray[$index] .= $rawBody;
+					return strlen($rawBody);
+				}
+			);
+		}
+		curl_multi_add_handle($this->mh, $handle);
 	}
 
 	/**
@@ -66,12 +86,16 @@ class CurlMulti implements CurlMultiInterface {
 	}
 
 	/**
-	 * Return the content of a cURL handle if CURLOPT_RETURNTRANSFER is set
+	 * Return the content of a cURL handle if CURLOPT_RETURNTRANSFER is set,
+	 * or retrieves the content of the cURL handle from the internal buffer.
 	 * @see http://php.net/manual/en/function.curl-multi-getcontent.php
-	 * @return string the content of a cURL handle if CURLOPT_RETURNTRANSFER is set
+	 * @return string the content of a cURL handle
 	 */
 	public function getContent(CurlInterface $curl):string {
-		return curl_multi_getcontent($curl->getHandle()) ?? "";
+		$index = array_search($curl->getHandle(), $this->curlHandleArray);
+		return $this->responseBodyArray[$index]
+			?? curl_multi_getcontent($curl->getHandle())
+			?? "";
 	}
 
 	/**

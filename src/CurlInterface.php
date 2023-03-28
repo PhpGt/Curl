@@ -114,4 +114,8 @@ interface CurlInterface {
 	 * @return array<string, mixed>
 	 */
 	public function getAllInfo():array;
+
+	public function getHeaderFunction():?callable;
+
+	public function getWriteFunction():?callable;
 }

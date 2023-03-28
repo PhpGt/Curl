@@ -7,7 +7,7 @@ use CurlHandle;
  * @see http://php.net/manual/en/function.curl-multi-info-read.php
  */
 class CurlMultiInfo implements CurlMultiInfoInterface {
-	protected string $message;
+	protected int $message;
 	protected int $result;
 	protected CurlHandle $handle;
 

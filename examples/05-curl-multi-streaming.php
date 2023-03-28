@@ -47,3 +47,28 @@ do {
 while($stillRunning > 0);
 
 echo PHP_EOL;
+
+/** Example output:
+.................................HEADER: HTTP/2 200
+HEADER: server: nginx
+HEADER: date: Tue, 28 Mar 2023 11:26:46 GMT
+HEADER: content-type: application/json
+HEADER: vary: Accept-Encoding
+HEADER: cache-control: no-cache, private
+HEADER: access-control-allow-origin: *
+HEADER: set-cookie: XSRF-TOKEN=eyJpdiI6I; expires=Tue, 28-Mar-2023 13:26:46 GMT; path=/; samesite=lax
+HEADER: set-cookie: catfacts_session=eyJpdiI6InUzdFY; expires=Tue, 28-Mar-2023 13:26:46 GMT; path=/; httponly; samesite=lax
+HEADER: x-frame-options: SAMEORIGIN
+HEADER: x-xss-protection: 1; mode=block
+HEADER: x-content-type-options: nosniff
+HEADER:
+BODY: {"fact":"Edward Lear, author of \\The Owl and the Pussycat\\\"\", is said to have had his new house in San Remo built to exactly the same specification as his previous residence, so that his much-loved tabby, Foss, would immediately feel at home.\"\"\"","length":236}
+...............HEADER: HTTP/2 200
+HEADER: content-type: application/json
+HEADER: date: Tue, 28 Mar 2023 11:26:46 GMT
+HEADER: vary: Origin
+HEADER: content-length: 20
+HEADER:
+BODY: {"ip":"82.4.210.105"}
+.
+*/
