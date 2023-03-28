@@ -38,8 +38,8 @@ class CurlMulti implements CurlMultiInterface {
 		array_push($this->curlHandleArray, $handle);
 		array_push($this->responseBodyArray, "");
 
-		$existingWriteFunction = $curl->getWriteFunction();
-		if(!$existingWriteFunction) {
+		$existingWrite = $curl->getWriteFunction();
+		if(!$existingWrite) {
 			$curl->setOpt(
 				CURLOPT_WRITEFUNCTION,
 				function (CurlHandle $ch, string $rawBody):int {
