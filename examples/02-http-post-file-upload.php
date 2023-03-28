@@ -4,6 +4,7 @@
  * using an HTTP POST upload.
 */
 use Gt\Curl\Curl;
+use Gt\Curl\UploadFile;
 
 require(__DIR__ . "/../vendor/autoload.php");
 
@@ -14,7 +15,7 @@ $curl = new Curl("https://cataas.com/cat");
 file_put_contents($tmpFile, $curl->output());
 
 // Now POST a form containing the cat photo to the Postman echo test server
-$upload = new CURLFile($tmpFile);
+$upload = new UploadFile($tmpFile);
 $curl = new Curl("https://postman-echo.com/post");
 $curl->setOpt(CURLOPT_POSTFIELDS, [
 	"cat-photo" => $upload
