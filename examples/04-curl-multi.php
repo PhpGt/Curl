@@ -11,11 +11,8 @@ use Gt\Curl\CurlMulti;
 require(__DIR__ . "/../vendor/autoload.php");
 
 $curlCat = new Curl("https://catfact.ninja/fact");
-$curlCat->setOpt(CURLOPT_RETURNTRANSFER, true);
 $curlIp = new Curl("https://api.ipify.org/?format=json");
-$curlIp->setOpt(CURLOPT_RETURNTRANSFER, true);
 $curlTimeout = new Curl("https://this-domain-name-does-not-exist.example.com/nothing.json");
-$curlTimeout->setOpt(CURLOPT_RETURNTRANSFER, true);
 
 $multi = new CurlMulti();
 $multi->add($curlCat);

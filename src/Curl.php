@@ -9,6 +9,10 @@ use Gt\Json\JsonObjectBuilder;
 class Curl implements CurlInterface {
 	protected CurlHandle $ch;
 	protected ?string $buffer;
+	/** @var callable */
+	protected $headerFunction;
+	/** @var callable */
+	protected $writeFunction;
 
 	public function __construct(string $url = null) {
 		$this->buffer = null;
@@ -169,6 +173,13 @@ class Curl implements CurlInterface {
 	 * @see http://php.net/manual/en/function.curl-setopt.php
 	 */
 	public function setOpt(int $option, mixed $value):bool {
+		if($option === CURLOPT_HEADERFUNCTION) {
+			$this->headerFunction = $value;
+		}
+		elseif($option === CURLOPT_WRITEFUNCTION) {
+			$this->writeFunction = $value;
+		}
+
 		return curl_setopt($this->ch, $option, $value);
 	}
 
@@ -204,5 +215,13 @@ class Curl implements CurlInterface {
 		/** @var array<string, mixed>|false $result */
 		$result = curl_getinfo($this->ch);
 		return $result ?: [];
+	}
+
+	public function getHeaderFunction():?callable {
+		return $this->headerFunction ?? null;
+	}
+
+	public function getWriteFunction():?callable {
+		return $this->writeFunction ?? null;
 	}
 }

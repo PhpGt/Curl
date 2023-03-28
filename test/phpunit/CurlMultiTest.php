@@ -26,6 +26,32 @@ class CurlMultiTest extends TestCase {
 		$sut->add($curlInterface);
 	}
 
+	public function testAdd_noExistingWriteFunction():void {
+		$curlInterface = self::createMock(CurlInterface::class);
+		$curlInterface->method("getHandle")
+			->willReturn(curl_init());
+		$curlInterface->method("getWriteFunction")
+			->willReturn(null);
+		$curlInterface->expects(self::once())
+			->method("setOpt")
+			->with(CURLOPT_WRITEFUNCTION, self::anything());
+		$sut = new CurlMulti();
+		$sut->add($curlInterface);
+	}
+
+	public function testAdd_existingWriteFunction():void {
+		$curlInterface = self::createMock(CurlInterface::class);
+		$curlInterface->method("getHandle")
+			->willReturn(curl_init());
+		$curlInterface->method("getWriteFunction")
+			->willReturn(function() {});
+		$curlInterface->expects(self::never())
+			->method("setOpt")
+			->with(CURLOPT_WRITEFUNCTION, self::anything());
+		$sut = new CurlMulti();
+		$sut->add($curlInterface);
+	}
+
 	public function testClose():void {
 		$sut = new CurlMulti();
 		$exception = null;

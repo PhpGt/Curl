@@ -285,4 +285,20 @@ class CurlTest extends TestCase {
 		$sut->exec();
 		self::assertSame("Hello, PHP.Gt!", $sut->outputJson()->getString("message"));
 	}
+
+	public function testGetHeaderFunction():void {
+		$func = function() {};
+		$sut = new Curl();
+		self::assertNull($sut->getHeaderFunction());
+		$sut->setOpt(CURLOPT_HEADERFUNCTION, $func);
+		self::assertSame($func, $sut->getHeaderFunction());
+	}
+
+	public function testGetWriteFunction():void {
+		$func = function() {};
+		$sut = new Curl();
+		self::assertNull($sut->getWriteFunction());
+		$sut->setOpt(CURLOPT_WRITEFUNCTION, $func);
+		self::assertSame($func, $sut->getWriteFunction());
+	}
 }
