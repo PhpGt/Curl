@@ -105,8 +105,13 @@ interface CurlInterface {
 
 	/**
 	 * Obtain the underlying curl resource, as created with curl_init.
+	 * The return type is purposefully missing, to allow for test frameworks
+	 * to extend this class to provide stubbed HTTP functionality.
+	 *
+	 * @return CurlHandle
+	 * @noinspection PhpMissingReturnTypeInspection
 	 */
-	public function getHandle():CurlHandle;
+	public function getHandle();
 
 	/**
 	 * Gets all CURLINFO_ data, identical to calling
