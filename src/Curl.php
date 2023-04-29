@@ -201,8 +201,13 @@ class Curl implements CurlInterface {
 
 	/**
 	 * Obtain the underlying curl resource, as created with curl_init.
+	 * The return type is purposefully missing, to allow for test frameworks
+	 * to extend this class to provide stubbed HTTP functionality.
+	 *
+	 * @return CurlHandle
+	 * @noinspection PhpMissingReturnTypeInspection
 	 */
-	public function getHandle():CurlHandle {
+	public function getHandle() {
 		return $this->ch;
 	}
 
@@ -218,10 +223,10 @@ class Curl implements CurlInterface {
 	}
 
 	public function getHeaderFunction():?callable {
-		return $this->headerFunction ?? null;
+		return $this->headerFunction;
 	}
 
 	public function getWriteFunction():?callable {
-		return $this->writeFunction ?? null;
+		return $this->writeFunction;
 	}
 }
